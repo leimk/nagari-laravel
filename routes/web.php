@@ -14,6 +14,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', 'DataController@create');
-Route::post('/','DataController@submit');
-
+Route::get('/', function(){ return view('welcome');});
+Route::get('/data', 'DataController@index');
+Route::post('/data', 'DataController@simpan')->name('data.simpan');
