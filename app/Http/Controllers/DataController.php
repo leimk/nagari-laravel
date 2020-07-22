@@ -7,10 +7,21 @@ use App\Data;
 
 class DataController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     //
     public function index()
     {
         return view('welcome');
+    }
+
+    public function cari(Data $id)
+    {
+        // dd($id);
+        $data = Data::findOrFail($id);
+        return response()->json($data);
     }
 
     public function simpan(Request $request)

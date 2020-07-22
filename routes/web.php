@@ -14,6 +14,12 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', function(){ return view('welcome');});
+Route::get('/', 'DataController@index');
 Route::get('/data', 'DataController@index');
+Route::get('/data/cari/{id:noPK}','DataController@cari');
 Route::post('/data', 'DataController@simpan')->name('data.simpan');
+
+
+Auth::routes(['register' => false]); //Buang jika mau dipakai untuk register user
+
+Route::get('/home', 'HomeController@index')->name('home');
