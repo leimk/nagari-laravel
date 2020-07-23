@@ -14,12 +14,13 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', 'DataController@index');
-Route::get('/data', 'DataController@index');
-Route::get('/data/cari/{id:noPK}','DataController@cari');
+Route::get('/', 'DataController@index')->name('root');
+Route::get('/data', 'DataController@index')->name('data.index');
+Route::get('/data/cari/{id:noPK}','DataController@cari')->name('data.cari');
 Route::post('/data', 'DataController@simpan')->name('data.simpan');
 
 
 Auth::routes(['register' => false]); //Buang jika mau dipakai untuk register user
+// Auth::routes(['password.reset' => false]);
 
 Route::get('/home', 'HomeController@index')->name('home');

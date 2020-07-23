@@ -25,3 +25,12 @@ use Illuminate\Support\Facades\Route;
 // Route::post('/', function(){
 //     return 'dari api';
 // });
+
+Route::group(['prefix'=>'auth'], function(){
+    Route::post('login','MainController@login');
+    Route::post('register','MainController@register');
+    Route::group(['middleware'=>'auth:api'], function(){
+        Route::get('logout', 'MainController@logout');
+        Route::get('profile', 'MainController@profile');
+    });
+});

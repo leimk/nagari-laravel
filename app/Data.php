@@ -27,4 +27,10 @@ class Data extends Model
         'pekerjaan',
         'usia'
     ];
+
+    protected $dates = [
+        'sdate',
+        'edate',
+        'tglLahir'
+    ];
 }

@@ -9,7 +9,7 @@ class DataController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
     //
     public function index()
@@ -17,18 +17,19 @@ class DataController extends Controller
         return view('welcome');
     }
 
-    public function cari(Data $id)
+    public function cari(Data $noPK)
     {
+        // KOK GA BISA?????????????
         // dd($id);
-        $data = Data::findOrFail($id);
+        $data = Data::findOrFail($noPK);
+        // dd($data);   
         return response()->json($data);
     }
 
     public function simpan(Request $request)
     {  
         // $periode = $periodeLength->m;
-        
-        
+        // dd($request);
         $rules = [
             'nama'          =>  'required',
             'manfaat'       =>  'required',
@@ -58,6 +59,21 @@ class DataController extends Controller
         $sdate = date_create($request->sdate);
         $edate = date_create($request->edate);
         $bdate = date_create($request->tglLahir);
+        // $tz  = new DateTimeZone('Asia/Jakarta');
+        // $age = DateTime::createFromFormat('Y-m-d', $bdate, $tz)
+        //         ->diff(new DateTime($sdate, $tz))
+        //         ->y;
+
+
+        $dob = $bdate;
+
+        $dobObject = $dob;
+        $nowObject = now();
+
+        $cekUsia = $dobObject->diff($nowObject);
+
+        // dd($diff->y);
+
         $periodeLength = $edate->diff($sdate);
         $cekUsia = $bdate->diff($sdate)->y;
         // dd($cekUsia);
@@ -70,7 +86,7 @@ class DataController extends Controller
             try{
                 $data = new Data;
                 $data->nama = $request['nama'];
-                $data->nama = $request['manfaat'];
+                $data->manfaat = $request['manfaat'];
                 $data->noPK = $request['no-pk'];
                 $data->noKTP = $request['no-ktp'];
                 $data->sdate = $request['sdate'];
@@ -84,19 +100,22 @@ class DataController extends Controller
                 $data->tabel = $request['tabel'];
                 $data->save();
             } catch(\Exception $e){
+
+                //TODO : TAMPILKAN NO-PK DATA YG SUDAH PERNAH DITERIMA SEBELUMNYA!
                 if($e->getCode()==23000){
                     return response()->json([
                         'status'    => 'fail',
                         'message'   =>  'No-PK sudah pernah kami terima sebelumnya.'
                     ],409);
-                }
+                }                   
             }
             
             return response()->json([
                 'status'    =>  'ok',
                 'message'   =>  'Terima Kasih. Data berhasil kami terima',
                 'data'      =>  $request->all()
-            ],201);
+            ],201);            
+            
         }
         
         $periodeLength=$periodeLength->y;
@@ -115,7 +134,7 @@ class DataController extends Controller
         //     default : $tb ='UNKNOWN';break;
         // }
 
-
+            // INI MASIH BLOM VALIDASI!!!
         $result= Baki::get()
         ->Where($key1, $periode)
         ->first();
