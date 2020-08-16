@@ -27,6 +27,7 @@ class CreateDataTable extends Migration
             $table->string('jenisKelamin');
             $table->string('pekerjaan');
             $table->integer('usia');
+            $table->float('pinjaman');
             $table->string('noPolis');
             $table->timestamps();
         });

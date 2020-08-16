@@ -24,6 +24,7 @@ class Data extends Model
         'periodeLength',
         'rate',
         'jenisKelamin',
+        'pinjaman',
         'pekerjaan',
         'usia'
     ];
@@ -33,4 +34,6 @@ class Data extends Model
         'edate',
         'tglLahir'
     ];
+
+  
 }

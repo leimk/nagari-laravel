@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Data;
+use App\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class DataController extends Controller
 {
@@ -14,22 +17,56 @@ class DataController extends Controller
     //
     public function index()
     {
-        return view('welcome');
+        $user = auth()->guard('api')->user();
+        // dd($user);
+        // return response()->json(['data' => $user]);
+        return response()->json([
+            'statusCode'    => '200',
+            'message'       => "Selamat datang di Host2Host PT Asuransi Eka LLoyd Jaya dengan BPD SumBar",
+            'data'          => null,
+            'error'         => null
+        ]);
+        // return response()->json(['data' => 'dari web']);
+        // return view('welcome');
     }
 
-    public function cari(Data $noPK)
+    public function cari(Request $request)
     {
         // KOK GA BISA?????????????
-        // dd($id);
-        $data = Data::findOrFail($noPK);
-        // dd($data);   
-        return response()->json($data);
+        $noPK = $request->id;
+
+        // dump($noPK);
+        // dd($noPK);
+        
+        // $data = Data::findOrFail($noPK);
+        $data = DB::table('data')
+        ->where('noPK','=',$noPK)
+        ->get();
+
+        if($data){
+            return response()->json([
+                "statusCode"    =>  200,
+                "message"       => "Pencarian ditemukan",
+                "error"         =>  null,
+                "data"          => $data
+            ]);           
+        }else{
+            return response()->json([
+                "statusCode"    =>  404,
+                "message"       => "Pencarian Tidak ditemukan",
+                "error"         => "Data Not Found",
+                "data"          => null
+            ]); 
+        }
+	    
+        // return response()->json($data);
     }
 
     public function simpan(Request $request)
     {  
+        $user = auth()->guard('api')->user();
         // $periode = $periodeLength->m;
-        // dd($request);
+        // dd($user);
         $rules = [
             'nama'          =>  'required',
             'manfaat'       =>  'required',
@@ -43,6 +80,7 @@ class DataController extends Controller
             'jenisKelamin'  =>  'required',
             'pekerjaan'     =>  'required',
             'usia'          =>  'required',
+            'pinjaman'      =>  'required',
             'tabel'         =>  'required'
         ];
 
@@ -85,6 +123,7 @@ class DataController extends Controller
         }else{
             try{
                 $data = new Data;
+                $data->user_id = Auth::id();
                 $data->nama = $request['nama'];
                 $data->manfaat = $request['manfaat'];
                 $data->noPK = $request['no-pk'];
@@ -109,6 +148,12 @@ class DataController extends Controller
                     ],409);
                 }                   
             }
+
+        //    $user=Auth::user();
+        //    $id = Auth::id();
+        //    dd($id);
+
+                
             
             return response()->json([
                 'status'    =>  'ok',
@@ -151,5 +196,23 @@ class DataController extends Controller
         // dump(request());
 
         // return 'siap menerima simpanan data';
+    }
+
+    public function produksi(Request $request)
+    {
+        // dump($request->dari,$request->sampai);
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+
+        $data = DB::table('data')
+        ->wherebetween('created_at',[$dari,$sampai])
+        ->orderBy('created_at')
+        ->get();
+        return response()->json([
+            'statusCode'=> 200,
+            'status'    =>  'ok',
+            'message'   =>  'data ditemukan.',
+            'data'      =>  $data
+        ],200);
     }
 }

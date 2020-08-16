@@ -8,6 +8,7 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
 
         <!-- Styles -->
         <style>
@@ -64,37 +65,112 @@
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
+    <!-- <div class="container border border-dark">
+        <div class="row no-gutters">
+        <div class="col-lg-3">
+        Kolom Kiri
+        </div>
+        <div class="col-lg-6">
+        Kolom Tengah
+        </div>
+        <div class="col-lg-3">
+        Kolom Kanan
+        </div>    
+        </div>
+        
+    </div> -->
+    <div class="container-fluid">
+        <div class="row">
+        <div class="col text-center mt-3 mb-3">
+            <h1><strong>Dokumentasi API PT ASURANSI EKA LLOYD JAYA V.1.0.0</strong></h1>
+        </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-2">
+                Table of Content
+            </div>  
+            <div class="col-lg-7 bg-secondary text-white">
+                <h1><strong><u>Pembukaan</u></strong></h1>
+                <h3>
+                Untuk mempercepat proses dan sebagai salah satu services untuk melayani mitra bisnis, Kami
+                menyediakan API berikut.
+                </h3>
+                <h2>Tata cara Pemakaian</h2>
+                <h3>Untuk <kbd>setiap request</kbd>, mohon menggunakan header berikut</h3>
+                <code><h1><kbd>Headers</kbd></h1>
+                </code>
+            </div>            
+            <div class="col-lg-3 bg-dark">
+            </div>            
+        </div>
+        <div class="row">
+            <div class="col-lg-2">
+            </div>
+            <div class="col-lg-7 bg-secondary">
+                <table class="table table-light">
+                    <thead class="bg-dark text-white">
+                    <tr>
+                        <td scope="col"><strong>Header</strong></td>
+                        <td scope="col"><strong>Value</strong></td>
+                        <td scope="col"><strong>Definition</strong></td>
+                    </tr>
+                    </thead class="">
+                    <tbody>
+                    <tr >
+                        <td scope="col">Content-Type</td>
+                        <td scope="col">Application/json</td>
+                        <td scope="col">Menidentifikasikan bahwa request yang diterima adalah dalam bentuk JSON</td>
+                    </tr>
+                    <tr>
+                        <td scope="col">Accept</td>
+                        <td scope="col">Application/json</td>
+                        <td scope="col">Menandakan bahwa response yang diterima adalah dalam bentuk JSON</td>
+                    </tr>
+                    <tr>
+                        <td scope="col">Authorization</td>
+                        <td scope="col">Bearer <kbd>Token</kbd></td>
+                        <td scope="col">Token yang digunakan untuk otorisasi setiap Request yang dikirimkan. <kbd>Token</kbd> didapatkan
+                        dari server setelah melakukan login(Lihat bagian Route login)</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-3 bg-dark">
+            </div>  
+        </div>
+        <div class="row">
+            <div class="col-lg-2">
+            </div>
+            <div class="col-lg-7 bg-info text-white">
+                <h1><strong><u>Route/Endpoint</u></strong></h1>
+            </div>
+            <div class="col-lg-3 bg-dark">
+            </div>  
+        </div>
+        <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-7 bg-secondary">
+                <ol class="text-white">
+                    <li><h2><kbd class="bg-primary">Login/Access Token Request</kbd></h2></li>
+                    <ul>
+                        <li><h3><code>nagari.ekalloyd.id/api/auth/login</code></h3></li>
+                    </ul>
 
-                        <!-- @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif -->
-                    @endauth
+            </div>
+            <div class="col-lg-3 bg-dark text-dark">
+                <div class="col">
+                <code>
+                <h3>Contoh request (dengan curl):</h3><br>
+                curl -v -d '{"email":"coba@ekalloyd.com","password":"evrexg","remember_me":false}' -H "Content-Type:application/json" http://nagari.ekalloyd.id/api/auth/login
+                <br><br>
+                <h3>Contoh Response</h3>
+                {"<kbd>access_token</kbd>":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI1IiwianRpIjoiNTkzZDMxYWYwZjA1YjZlYWM3MjU4N2VmYjc3NDNhZDRmYWQzYWFjMWRkYjVjYWJlZWVmMDBhYTI4MjFkMWY4NjcxOWE3ZDNlMjk0MzY3NjMiLCJpYXQiOjE1OTYwOTg1NzcsIm5iZiI6MTU5NjA5ODU3NywiZXhwIjoxNjI3NjM0NTc3LCJzdWIiOiIzIiwic2NvcGVzIjpbXX0.DrPC5p1WX0pxXXvT6V-0JDwB-IWLiIDOF-sdGa0ex-yfyEIcj80TN_yWhX5x0OnLbAreGI6xmyhDKLsVEZWXCdoWLDCK29vvRRjvJjkAhG1JRdzUAV_Uw7Pbr5RykZP67-oVm3Wl5LVCKDDgOtwdLfrNphyK1KNseiHduNGaHKA0ghGiVnaaH856MTRWAiJm_5JLnFf7Bqep3menEiso_gnYsztqgEeQKYhXpCMVQNFvXaKY8t2KG76RdPxoBn3udkX7S13xYxLaybkPdc-74Z8mJOgef8yyGZjupm7_hPsWaEiCeqTTC_kEJ1Cg9h-NDHMDhBaQiye4yMDGCHmTou4G_Jzx6ut6F1qZA672-qreIJN0sRaVXQZ3sVozpeyq7uiKpgzOn-GeHaqdTPqcrhF9CPJgI4swC_pMgupYNWR_Mo_W3sjHbo-PfJTJs3lsYcLJ6C0_oQ_67Pi1uLUAHMejMBckil_tMN2OFRShCLrZ13tIouKJP-Zura8rZqrebg6DfXM35SF72XcjCeA15C9WJmRBmiusio2wL4BjEg7e75rx4hXUSetKBDfqXrgh6HER_ER6lw4j35j9JhVGL9ya1vmxFCDDbn4Au7LddxDP41gynPNHhjg3vTbH4RCgUDeM8KgNT8DM4sma906kMZT7dVr2Ab1pmR8Qb4-RuEQ",
+                "token_type":"Bearer",
+                "expires_at":"2020-07-30"}
+                </code>
                 </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    API Untuk BPD SumBar 
-                </div>
-
-                <!-- <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div> -->
             </div>
         </div>
+    </div>
     </body>
 </html>
